@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from groq import Groq
 import os
 
-load_dotenv()
+load_dotenv("../.env")
 
 def get_models(client):
     # The models.list() method returns an object containing all active models

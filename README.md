@@ -12,3 +12,6 @@ use env variable `OLLAMA_BASE_URL=http://localhost:11434`
 
 refs:  
 https://hub.docker.com/r/ollama/ollama   
+
+TODO:
+defferent results on Run and Start Debugging
