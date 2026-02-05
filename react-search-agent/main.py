@@ -11,14 +11,11 @@ from langchain_tavily import TavilySearch
 tools = [TavilySearch()]
 llm = ChatOpenAI(model="gpt-4")
 react_prompt = hub.pull("hwchase17/react")
-agent = create_react_agent(
-    llm=llm,
-    tools = tools,
-    prompt = react_prompt
-)
+agent = create_react_agent(llm=llm, tools=tools, prompt=react_prompt)
 
 agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 chain = agent_executor
+
 
 def main():
     result = chain.invoke(

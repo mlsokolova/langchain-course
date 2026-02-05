@@ -1,8 +1,10 @@
-from dotenv import load_dotenv
-from groq import Groq
 import os
 
+from dotenv import load_dotenv
+from groq import Groq
+
 load_dotenv("../.env")
+
 
 def get_models(client):
     # The models.list() method returns an object containing all active models
@@ -11,9 +13,11 @@ def get_models(client):
     for model in models.data:
         print(model.id)
 
+
 def main():
-    client = Groq() 
+    client = Groq()
     get_models(client)
 
+
 if __name__ == "__main__":
-    main()    
+    main()
