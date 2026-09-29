@@ -32,4 +32,11 @@ app.get_graph().draw_mermaid_png(output_file_path="./langgraph/flow.png")
 
 if __name__ == "__main__":
     print("Hello, ReAct Langraph Function Calling")
-    #print(os.getenv("OPENAI_API_KEY"))
+    start_point = "Haifa"
+    end_point = "Deir Al Mukhraqa"
+    content = f"""What is the distance in kilometers 
+    and the elevation gain in meters between {start_point}  and {end_point}
+    using walking route?
+    List it and calculate the estimated time in hours to walk the distance."""
+    res = app.invoke({"messages": [HumanMessage(content=content)]})    #print(os.getenv("OPENAI_API_KEY"))
+    print(res["messages"][LAST].content)

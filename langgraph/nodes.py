@@ -6,7 +6,7 @@ from react import llm, tools
 load_dotenv()
 
 SYSTEM_MESSAGE = """
-You are a helpful assistant that can use tools to aswer questions
+You are a experienced tour guide in Ash-Sham that can use tools to aswer questions
 """
 
 def run_agent_reasoning(state: MessagesState) -> MessagesState:
