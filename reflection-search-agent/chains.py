@@ -14,7 +14,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 from langchain_openai import ChatOpenAI
 
-from schemas import AnswerQuestion
+from schemas import AnswerQuestion, ReviseAnswer
 
 llm = ChatOpenAI(model="gpt-4o-mini")
 parser_json = JsonOutputToolsParser(return_id=True)
@@ -31,7 +31,7 @@ Current time: {time}
 3. Recommend search queries to reserch information and improve your answer.""",
         ),
         MessagesPlaceholder(variable_name="messages"),
-        ("system", "Anser the user's question above using required format."),
+        ("system", "Answer the user's question above using required format."),
     ]
 ).partial(time=lambda: datetime.datetime.now().isoformat())
 
@@ -43,10 +43,25 @@ first_responder_chain = first_responder_prompt_template | llm.bind_tools(
     tools=[AnswerQuestion], tool_choice="AnswerQuestion"
 )
 
+revise_instructions = """
+Revise your previous answer using new information.
+- you should use previous critique to add important information to your answer.
+  - you must include numerical citation in your revised answer to ensure it can be verified
+  - add a "References" section to the bottom of your answer (which does not count towards the word limit). In form of:
+    - [1] https://example.com
+    - [2] https://example.com
+  - you should use previous critique to remove superfluous information from your answer and make it no more than 250 symbols.
+"""
+
+revisor = actor_prompt_template.partial(
+    first_instruction=revise_instructions
+) | llm.bind_tools(tools=[ReviseAnswer], tool_choice="ReviseAnswer")
+
 if __name__ == "__main__":
     human_message = HumanMessage(
-        content="""Write about common open-source format for the different CAD models to make them transferable between CAD tools.
-list technical characteristics of that format.        
+        content="""Write about ablation devices in the cardiology.
+Write about validation tests of ablation devices on the manufacturing, before it is used in the patient.
+What kind of the validation tests are required for the ablation devices to be acceplable by FDA?
         """
     )
 
